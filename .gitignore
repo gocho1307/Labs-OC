@@ -137,10 +137,6 @@ dmypy.json
 *.out
 *.bbl
 *.blg
-*.pdf_tex
 *.run.xml
 *.synctex.gz
 *.xdv
-
-# LaTeX Output
-*.pdf
