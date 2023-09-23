@@ -14,3 +14,6 @@ endif
 
 clean:
 	rm -f $(TARGETS) *.o *.stderr *.stdout core *~
+
+fmt: mm3.c
+	clang-format -i $^

@@ -13,5 +13,11 @@ endif
 
 clean:
 	rm -f $(TARGETS) *.o *.stderr *.stdout core *~
-	rm *.out *.dat
-	touch cm1_plot.dat
+	rm *.out *.dat *.png
+
+run:
+	./cm1 > ./cm1.out
+	./cm1_proc.sh
+
+fmt: cm1.c
+	clang-format -i $^

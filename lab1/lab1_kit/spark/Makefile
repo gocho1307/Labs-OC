@@ -10,3 +10,6 @@ clean:
 	rm -f $(TARGETS) *.o *.stderr *.stdout core *~
 	rm *.out *.dat
 	touch spark_plot.dat
+
+fmt: spark.c
+	clang-format -i $^

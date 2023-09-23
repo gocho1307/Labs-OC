@@ -5,8 +5,8 @@
 #include <stdlib.h> // exit()
 #include <string.h>
 
-#define CACHE_MIN (8 * 1024)
-#define CACHE_MAX (64 * 1024)
+#define CACHE_MIN (64 * 1024)
+#define CACHE_MAX (1024 * 1024)
 #define N_REPETITIONS (200)
 
 void handle_error(char *outstring);
@@ -33,8 +33,8 @@ int main() {
         handle_error("create_eventset");
     }
 
-    /* Add L1 data cache misses to our Event Set */
-    if (PAPI_add_event(EventSet, PAPI_L1_DCM) != PAPI_OK) {
+    /* Add L2 data cache misses to our Event Set */
+    if (PAPI_add_event(EventSet, PAPI_L2_DCM) != PAPI_OK) {
         handle_error("add_event");
     }
 
