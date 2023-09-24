@@ -8,10 +8,12 @@ set style line 2 lc rgb "#ebcb8b" lt 1 lw 2; # yellow
 set style line 3 lc rgb "#5e81ac" lt 1 lw 2; # blue
 set style line 4 lc rgb "#f8766d" lt 1 lw 2; # red
 
+set style line 5 lc rgb "gray" lt 1 lw 1; # gray
+
 set border linewidth 0.5;
 set xlabel "Strides (Bytes)";
 set ylabel "Average Misses";
-set grid;
+set grid ls 5;
 set key title "Cache Size" right top;
 set xr [0.75:35000];
 set yr [-0.05:1.8];
