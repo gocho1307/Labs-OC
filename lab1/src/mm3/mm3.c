@@ -5,7 +5,7 @@
 #include <string.h>
 
 #define N 512
-#define CACHE_LINE_SIZE 1 // TODO: update this value
+#define CACHE_LINE_SIZE 64
 
 #define SUB_MATRIX_SIZE                                                        \
     (((CACHE_LINE_SIZE / sizeof(int16_t)) <= 0)                                \
