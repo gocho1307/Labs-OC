@@ -6,16 +6,12 @@
 
 #define N 512
 
-void handle_error(char *outstring);
-void transpose(int16_t m[N][N], int16_t res[N][N]);
-
 void setup(int16_t m1[N][N], int16_t m2[N][N], int16_t m3[N][N]) {
-    int16_t tmp[N][N];
     memset(m3, 0, sizeof(int16_t) * N * N);
     for (size_t i = 0; i < N; ++i) {
         for (size_t j = 0; j < N; ++j) {
             m1[i][j] = (i + j) % 8 + 1;
-            tmp[i][j] = (N - i + j) % 8 + 1;
+            m2[i][j] = (N - i + j) % 8 + 1;
         }
     }
 }
@@ -39,12 +35,19 @@ void multiply_matrices(int16_t const factor1[N][N], int16_t const factor2[N][N],
     }
 }
 
+void handle_error(char *outstring) {
+    fprintf(stderr, "Error in PAPI function call %s\n", outstring);
+    PAPI_perror("PAPI Error");
+    exit(EXIT_FAILURE);
+}
+
 int main() {
     int16_t mul1[N][N];
     int16_t mul2[N][N];
+    int16_t tmp[N][N];
     int16_t res[N][N];
 
-    setup(mul1, mul2, res);
+    setup(mul1, tmp, res);
 
     /************************************/
 
@@ -107,7 +110,7 @@ int main() {
     /*      MATRIX TRANSPOSITION        */
     /************************************/
 
-    transpose(tmp, m2);
+    transpose(tmp, mul2);
     multiply_matrices(mul1, mul2, res);
 
     /************************************/
@@ -144,10 +147,4 @@ int main() {
     fprintf(stdout, "Matrix checksum: %lld\n", checksum);
 
     return 0;
-}
-
-void handle_error(char *outstring) {
-    fprintf(stderr, "Error in PAPI function call %s\n", outstring);
-    PAPI_perror("PAPI Error");
-    exit(EXIT_FAILURE);
 }
