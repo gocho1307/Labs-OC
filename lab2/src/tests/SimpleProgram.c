@@ -1,7 +1,6 @@
-#include "SimpleCache.h"
+#include "../1/L1Cache.h"
 
 int main() {
-
     int value1, value2, clock;
 
     resetTime();
