@@ -1,3 +1,6 @@
+#ifndef SIMPLECACHE_H
+#define SIMPLECACHE_H
+
 #include "../Cache.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,3 +34,5 @@ typedef struct Cache {
 void read(int, unsigned char *);
 
 void write(int, unsigned char *);
+
+#endif

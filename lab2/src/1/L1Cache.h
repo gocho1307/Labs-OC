@@ -1,3 +1,6 @@
+#ifndef SIMPLECACHE_H
+#define SIMPLECACHE_H
+
 #include "../Cache.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,10 +28,12 @@ typedef struct CacheLine {
 
 typedef struct Cache {
     int init;
-    CacheLine line[L1_LINE_NUM];
+    CacheLine line[256];
 } Cache;
 
 /**************** Interfaces **********************************/
 void read(int, unsigned char *);
 
 void write(int, unsigned char *);
+
+#endif

@@ -27,17 +27,17 @@ void accessDRAM(int address, unsigned char *data, int mode) {
 
 /**************** L1 cache ************************************/
 void initCache() {
-    for (int i = 0; i <= L1_LINE_NUM; i++) {
+    for (int i = 0; i <= 256; i++) {
         SimpleCache.line[i].Valid = 0;
     }
     SimpleCache.init = 1;
 }
 
-unsigned int getOffset(int address) { return address & 0x01; }
+unsigned int getOffset(int address) { return address & 0x03F; }
 
-unsigned int getIndex(int address) { return address & 0x01E; }
+unsigned int getIndex(int address) { return (address >> 6) & 0x0FF; }
 
-unsigned int getTag(int address) { return address >> 5; }
+unsigned int getTag(int address) { return address >> 14; }
 
 void accessL1(int address, unsigned char *data, int mode) {
     unsigned int Offset = getOffset(address);
@@ -67,12 +67,10 @@ void accessL1(int address, unsigned char *data, int mode) {
 
     /* Actually access the Cache */
     if (mode == MODE_READ) { // read data from cache line
-        memcpy(&(L1Cache[Index * BLOCK_SIZE + Offset * WORD_SIZE]), data,
-               WORD_SIZE);
+        memcpy(&(L1Cache[Index * BLOCK_SIZE + Offset]), data, WORD_SIZE);
         time += L1_READ_TIME;
     } else if (mode == MODE_WRITE) { // write data from cache line
-        memcpy(data, &(L1Cache[Index * BLOCK_SIZE + Offset * WORD_SIZE]),
-               WORD_SIZE);
+        memcpy(data, &(L1Cache[Index * BLOCK_SIZE + Offset]), WORD_SIZE);
         time += L1_WRITE_TIME;
         Line->Dirty = 1;
     }
