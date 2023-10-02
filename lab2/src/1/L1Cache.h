@@ -1,4 +1,4 @@
-#include "Cache.h"
+#include "../Cache.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,6 +12,9 @@ void accessDRAM(int, unsigned char *, int);
 
 /**************** Cache ***************************************/
 void initCache();
+unsigned int getOffset(int address);
+unsigned int getIndex(int address);
+unsigned int getTag(int address);
 void accessL1(int, unsigned char *, int);
 
 typedef struct CacheLine {
@@ -22,7 +25,7 @@ typedef struct CacheLine {
 
 typedef struct Cache {
     int init;
-    CacheLine line;
+    CacheLine line[L1_LINE_NUM];
 } Cache;
 
 /**************** Interfaces **********************************/

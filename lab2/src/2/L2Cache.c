@@ -1,4 +1,4 @@
-#include "SimpleCache.h"
+#include "L2Cache.h"
 
 unsigned char L1Cache[L1_SIZE];
 unsigned char L2Cache[L2_SIZE];
