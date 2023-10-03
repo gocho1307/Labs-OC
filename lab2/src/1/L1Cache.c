@@ -1,9 +1,9 @@
 #include "L1Cache.h"
 
 unsigned char L1Cache[L1_SIZE];
+Cache L1_Cache;
 unsigned char DRAM[DRAM_SIZE];
 unsigned int time;
-Cache SimpleCache;
 
 /**************** Time Manipulation ***************************/
 void resetTime() { time = 0; }
@@ -25,29 +25,23 @@ void accessDRAM(int address, unsigned char *data, int mode) {
     }
 }
 
-/**************** L1 cache ************************************/
+/**************** Cache ***************************************/
 void initCache() {
     for (int i = 0; i <= 256; i++) {
-        SimpleCache.line[i].Valid = 0;
+        L1_Cache.line[i].Valid = 0;
     }
-    SimpleCache.init = 1;
+    L1_Cache.init = 1;
 }
 
-unsigned int getOffset(int address) { return address & 0x03F; }
-
-unsigned int getIndex(int address) { return (address >> 6) & 0x0FF; }
-
-unsigned int getTag(int address) { return address >> 14; }
-
 void accessL1(int address, unsigned char *data, int mode) {
-    unsigned int Offset = getOffset(address);
-    unsigned int Index = getIndex(address);
-    unsigned int Tag = getTag(address);
+    unsigned int Offset = address & 0x03F;
+    unsigned int Index = (address >> 6) & 0x0FF;
+    unsigned int Tag = address >> 14;
 
     unsigned int MemAddress = address - Offset;
     unsigned char TempBlock[BLOCK_SIZE];
 
-    CacheLine *Line = &(SimpleCache.line[Index]);
+    CacheLine *Line = &(L1_Cache.line[Index]);
 
     /* Checks for cache miss */
     if (!Line->Valid || Line->Tag != Tag) { // if block not present - miss
@@ -76,6 +70,7 @@ void accessL1(int address, unsigned char *data, int mode) {
     }
 }
 
+/**************** Interfaces **********************************/
 void read(int address, unsigned char *data) {
     accessL1(address, data, MODE_READ);
 }

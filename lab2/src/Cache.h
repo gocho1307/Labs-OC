@@ -1,5 +1,5 @@
-#ifndef CACHE_H
-#define CACHE_H
+#ifndef __CACHE_H__
+#define __CACHE_H__
 
 #define WORD_SIZE 4                   // in bytes, i.e 32 bit words
 #define BLOCK_SIZE (16 * WORD_SIZE)   // in bytes
@@ -18,4 +18,4 @@
 #define L1_READ_TIME 1
 #define L1_WRITE_TIME 1
 
-#endif
+#endif // __CACHE_H__

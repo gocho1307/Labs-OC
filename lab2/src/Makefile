@@ -15,7 +15,8 @@ TARGETS := $(patsubst %.c,%,$(wildcard tests/*.c))
 .PHONY: all clean fmt test
 
 all:
-	$(CC) $(CFLAGS) tests/SimpleProgram.c 1/L1Cache.c -o $(TARGETS)
+	$(CC) $(CFLAGS) tests/SimpleProgram_L1.c 1/L1Cache.c -o tests/SimpleProgram_L1
+	$(CC) $(CFLAGS) tests/SimpleProgram_L2.c 2/L2Cache.c -o tests/SimpleProgram_L2
 
 clean:
 	rm -f $(OBJECTS) $(TARGETS)

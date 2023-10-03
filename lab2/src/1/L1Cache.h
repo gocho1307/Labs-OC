@@ -1,11 +1,12 @@
-#ifndef SIMPLECACHE_H
-#define SIMPLECACHE_H
+#ifndef __L1CACHE_H__
+#define __L1CACHE_H__
 
 #include "../Cache.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+/**************** Time Manipulation ***************************/
 void resetTime();
 
 unsigned int getTime();
@@ -15,9 +16,6 @@ void accessDRAM(int, unsigned char *, int);
 
 /**************** Cache ***************************************/
 void initCache();
-unsigned int getOffset(int address);
-unsigned int getIndex(int address);
-unsigned int getTag(int address);
 void accessL1(int, unsigned char *, int);
 
 typedef struct CacheLine {
@@ -36,4 +34,4 @@ void read(int, unsigned char *);
 
 void write(int, unsigned char *);
 
-#endif
+#endif // __L1CACHE_H__

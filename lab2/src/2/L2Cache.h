@@ -1,22 +1,23 @@
-#ifndef SIMPLECACHE_H
-#define SIMPLECACHE_H
+#ifndef __L2CACHE_H__
+#define __L2CACHE_H__
 
 #include "../Cache.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+/**************** Time Manipulation ***************************/
 void resetTime();
 
 unsigned int getTime();
 
-/****************  RAM memory (byte addressable) ***************/
+/**************** RAM memory (byte addressable) ***************/
 void accessDRAM(int, unsigned char *, int);
 
-/*********************** Cache *************************/
-
+/**************** Cache ***************************************/
 void initCache();
 void accessL1(int, unsigned char *, int);
+void accessL2(int, unsigned char *, int);
 
 typedef struct CacheLine {
     unsigned char Valid;
@@ -26,13 +27,12 @@ typedef struct CacheLine {
 
 typedef struct Cache {
     int init;
-    CacheLine line;
+    CacheLine *line;
 } Cache;
 
-/*********************** Interfaces *************************/
-
+/**************** Interfaces **********************************/
 void read(int, unsigned char *);
 
 void write(int, unsigned char *);
 
-#endif
+#endif // __L2CACHE_H__
