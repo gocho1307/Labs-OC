@@ -7,16 +7,16 @@
 CC = gcc
 CFLAGS = -Wall -Wextra
 
-SOURCES  := $(wildcard */*.c)
-HEADERS  := $(wildcard */*.h)
+SOURCES  := $(shell find . -name "*.c")
+HEADERS  := $(shell find . -name "*.h")
 OBJECTS  := $(SOURCES:.c=.o)
 TARGETS := $(patsubst %.c,%,$(wildcard tests/*.c))
 
 .PHONY: all clean fmt test
 
 all:
-	$(CC) $(CFLAGS) tests/SimpleProgram_L1.c 1/L1Cache.c -o tests/SimpleProgram_L1
-	$(CC) $(CFLAGS) tests/SimpleProgram_L2.c 2/L2Cache.c -o tests/SimpleProgram_L2
+	$(CC) $(CFLAGS) tests/SimpleProgram_L1.c src/1/L1Cache.c -o tests/SimpleProgram_L1
+	$(CC) $(CFLAGS) tests/SimpleProgram_L2.c src/2/L2Cache.c -o tests/SimpleProgram_L2
 
 clean:
 	rm -f $(OBJECTS) $(TARGETS)
