@@ -1,11 +1,12 @@
-#ifndef SIMPLECACHE_H
-#define SIMPLECACHE_H
+#ifndef __L2CACHE_TWO_WAY_H__
+#define __L2CACHE_TWO_WAY_H__
 
 #include "../Cache.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+/**************** Time Manipulation ***************************/
 void resetTime();
 
 unsigned int getTime();
@@ -17,6 +18,11 @@ void accessDRAM(int, unsigned char *, int);
 
 void initCache();
 void accessL1(int, unsigned char *, int);
+void accessL2(int, unsigned char *, int);
+void missHandler(unsigned int, unsigned char, unsigned int, unsigned int,
+                 AssociativeCacheLine *);
+void hitHandler(int, unsigned char, unsigned int, unsigned int,
+                AssociativeCacheLine *);
 
 typedef struct CacheLine {
     unsigned char Valid;
@@ -24,10 +30,22 @@ typedef struct CacheLine {
     unsigned int Tag;
 } CacheLine;
 
+typedef struct AssociativeCacheLine {
+    unsigned char Valid;
+    unsigned char Dirty;
+    unsigned int Tag;
+    short int Access;
+} AssociativeCacheLine;
+
 typedef struct Cache {
     int init;
-    CacheLine line;
+    CacheLine *line;
 } Cache;
+
+typedef struct AssociativeCache {
+    int init;
+    AssociativeCacheLine *line;
+} AssociativeCache;
 
 /*********************** Interfaces *************************/
 
@@ -35,4 +53,4 @@ void read(int, unsigned char *);
 
 void write(int, unsigned char *);
 
-#endif
+#endif // __L2CACHE_TWO_WAY_H__
