@@ -144,7 +144,7 @@ void accessL2(int address, unsigned char *data, int mode) {
     }
 }
 
-void missHandler(unsigned int MemAddress, unsigned char TempBlock,
+void missHandler(unsigned int MemAddress, unsigned char *TempBlock,
                  unsigned int Index, unsigned int Tag,
                  AssociativeCacheLine *Line) {
     if (!Line->Valid || Line->Tag != Tag) { // if block not present - miss
@@ -164,7 +164,7 @@ void missHandler(unsigned int MemAddress, unsigned char TempBlock,
     }
 }
 
-void hitHandler(int mode, unsigned char data, unsigned int Index,
+void hitHandler(int mode, unsigned char *data, unsigned int Index,
                 unsigned int Offset, AssociativeCacheLine *Line) {
     /* Actually access the Cache */
     if (mode == MODE_READ) { // read data from cache line

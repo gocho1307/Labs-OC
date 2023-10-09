@@ -16,14 +16,6 @@ void accessDRAM(int, unsigned char *, int);
 
 /*********************** Cache *************************/
 
-void initCache();
-void accessL1(int, unsigned char *, int);
-void accessL2(int, unsigned char *, int);
-void missHandler(unsigned int, unsigned char, unsigned int, unsigned int,
-                 AssociativeCacheLine *);
-void hitHandler(int, unsigned char, unsigned int, unsigned int,
-                AssociativeCacheLine *);
-
 typedef struct CacheLine {
     unsigned char Valid;
     unsigned char Dirty;
@@ -46,6 +38,14 @@ typedef struct AssociativeCache {
     int init;
     AssociativeCacheLine *line;
 } AssociativeCache;
+
+void initCache();
+void accessL1(int, unsigned char *, int);
+void accessL2(int, unsigned char *, int);
+void missHandler(unsigned int, unsigned char *, unsigned int, unsigned int,
+                 AssociativeCacheLine *);
+void hitHandler(int, unsigned char *, unsigned int, unsigned int,
+                AssociativeCacheLine *);
 
 /*********************** Interfaces *************************/
 
