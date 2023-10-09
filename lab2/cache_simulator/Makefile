@@ -17,7 +17,9 @@ TARGETS := $(patsubst %.c,%,$(wildcard tests/*.c))
 all:
 	$(CC) $(CFLAGS) tests/SimpleProgram_L1.c src/1/L1Cache.c -o tests/SimpleProgram_L1
 	$(CC) $(CFLAGS) tests/SimpleProgram_L2.c src/2/L2Cache.c -o tests/SimpleProgram_L2
-	$(CC) $(CFLAGS) tests/SimpleProgram_L2_2_Way.c src/3/L2Cache_two_way.c -o tests/SimpleProgram_L2_2_Way
+	$(CC) $(CFLAGS) tests/Test0_Ex3.c src/3/L2Cache_two_way.c -o tests/Test0_Ex3
+	$(CC) $(CFLAGS) tests/Test1_Ex3.c src/3/L2Cache_two_way.c -o tests/Test1_Ex3
+	$(CC) $(CFLAGS) tests/Test2_Ex3.c src/3/L2Cache_two_way.c -o tests/Test2_Ex3
 
 clean:
 	rm -f $(OBJECTS) $(TARGETS)

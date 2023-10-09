@@ -185,3 +185,10 @@ void read(int address, unsigned char *data) {
 void write(int address, unsigned char *data) {
     accessL1(address, data, MODE_WRITE);
 }
+
+
+/**************** Testing **********************************/  // TODO maybe do this ??? :D
+
+unsigned char return_value_in_cache(unsigned int Index, unsigned int Offset) {
+    return L2Cache[Index * BLOCK_SIZE + Offset];
+}
