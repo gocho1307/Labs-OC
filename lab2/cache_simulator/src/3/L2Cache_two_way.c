@@ -123,7 +123,7 @@ void accessL2(int address, unsigned char *data, int mode) {
         missHandler(MemAddress, TempBlock, Index + 1, Tag, LineTwo);
         LineAccessed = 2;
 
-    } else {  // miss, both lines are occupied and none match
+    } else { // miss, both lines are occupied and none match
 
         // Check which one was last accessed
         if (LineOne->Access > LineTwo->Access) {
@@ -139,8 +139,8 @@ void accessL2(int address, unsigned char *data, int mode) {
         LineOne->Access = 0; // 0 means most recently used
         LineTwo->Access = 1; // 1 means least recently used
     } else {
-        LineTwo->Access = 0; 
-        LineOne->Access = 1; 
+        LineTwo->Access = 0;
+        LineOne->Access = 1;
     }
 }
 
@@ -186,8 +186,8 @@ void write(int address, unsigned char *data) {
     accessL1(address, data, MODE_WRITE);
 }
 
-
-/**************** Testing **********************************/  // TODO maybe do this ??? :D
+/**************** Testing **********************************/ // TODO maybe do
+                                                              // this ??? :D
 
 unsigned char return_value_in_cache(unsigned int Index, unsigned int Offset) {
     return L2Cache[Index * BLOCK_SIZE + Offset];

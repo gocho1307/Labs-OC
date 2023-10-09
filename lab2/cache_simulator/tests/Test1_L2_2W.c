@@ -6,20 +6,20 @@ int main() {
 
     uint32_t TestData[30];
 
-    for(int i = 0; i < 30; i++) {
+    for (int i = 0; i < 30; i++) {
         TestData[i] = i;
     }
 
     resetTime();
     initCache();
 
-    for(int i = 1; i < 29; i++) {
+    for (int i = 1; i < 29; i++) {
         write(i, (uint8_t *)&TestData[i]);
 
         clock = getTime();
         printf("Time: %d\n", clock);
 
-        read(1, (uint8_t *)&TestData[i-1]);
+        read(1, (uint8_t *)&TestData[i - 1]);
 
         clock = getTime();
         printf("Time: %d\n", clock);

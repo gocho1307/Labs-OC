@@ -53,7 +53,6 @@ void read(int, unsigned char *);
 
 void write(int, unsigned char *);
 
-
 /**************** Testing **********************************/
 
 unsigned char return_value_in_cache(unsigned int, unsigned int);
