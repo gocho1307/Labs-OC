@@ -92,8 +92,6 @@ void accessL2(uint32_t address, uint8_t *data, uint32_t mode) {
             accessDRAM(L2[index][i].Tag * L2_N_LINES * BLOCK_SIZE +
                            index * BLOCK_SIZE,
                        L2[index][i].Data, MODE_WRITE);
-            L2[index][i].Data[0] = 0;
-            L2[index][i].Data[WORD_SIZE] = 0;
         }
 
         accessDRAM(address - offset, L2[index][i].Data, MODE_READ);
@@ -110,11 +108,11 @@ void accessL2(uint32_t address, uint8_t *data, uint32_t mode) {
     } else {
         if (mode == MODE_READ) {
             memcpy(data, &(L2[index][i].Data), BLOCK_SIZE);
-            time += L1_READ_TIME;
+            time += L2_READ_TIME;
             L2[index][i].Time = time;
         } else if (mode == MODE_WRITE) {
             memcpy(&(L2[index][i].Data), data, BLOCK_SIZE);
-            time += L1_WRITE_TIME;
+            time += L2_WRITE_TIME;
             L2[index][i].Dirty = 1;
             L2[index][i].Time = time;
         }
@@ -142,8 +140,6 @@ void accessL1(uint32_t address, uint8_t *data, uint32_t mode) {
             accessL2(L1[index].Tag * L1_N_LINES * BLOCK_SIZE +
                          index * BLOCK_SIZE,
                      L1[index].Data, MODE_WRITE);
-            L1[index].Data[0] = 0;
-            L1[index].Data[WORD_SIZE] = 0;
         }
 
         accessL2(address - offset, L1[index].Data, MODE_READ);

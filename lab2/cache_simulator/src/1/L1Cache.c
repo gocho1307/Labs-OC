@@ -62,8 +62,6 @@ void accessL1(uint32_t address, uint8_t *data, uint32_t mode) {
             accessDRAM(L1[index].Tag * L1_N_LINES * BLOCK_SIZE +
                            index * BLOCK_SIZE,
                        L1[index].Data, MODE_WRITE);
-            L1[index].Data[0] = 0;
-            L1[index].Data[WORD_SIZE] = 0;
         }
 
         accessDRAM(address - offset, L1[index].Data, MODE_READ);
