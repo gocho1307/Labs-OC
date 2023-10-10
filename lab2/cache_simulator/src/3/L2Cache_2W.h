@@ -1,5 +1,5 @@
-#ifndef __L2CACHE_2W_H__
-#define __L2CACHE_2W_H__
+#ifndef __L2_CACHE_2W_H__
+#define __L2_CACHE_2W_H__
 
 #include "Cache.h"
 #include <stdint.h>
@@ -42,4 +42,4 @@ typedef struct CacheL1 {
 void read(uint32_t, uint8_t *);
 void write(uint32_t, uint8_t *);
 
-#endif // __SIMPLECACHE_H__
+#endif // __L2_CACHE_2W_H__

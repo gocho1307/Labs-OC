@@ -1,39 +1,34 @@
-#ifndef __L1CACHE_H__
-#define __L1CACHE_H__
+#ifndef __L1_CACHE_H__
+#define __L1_CACHE_H__
 
 #include "Cache.h"
-#include <math.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-/**************** Time Manipulation ***************************/
-void resetTime();
+#define L1_N_LINES (L1_SIZE / BLOCK_SIZE)
 
+/**************** Time Manipulation ****************************/
+void resetTime();
 uint32_t getTime();
 
-/**************** RAM memory (byte addressable) ***************/
-void accessDRAM(int, uint8_t *, int);
+/**************** RAM Memory (byte addressable) ****************/
+void accessDRAM(uint32_t, uint8_t *, uint32_t);
 
-/**************** Cache ***************************************/
+/**************** Caches ***************************************/
 void initCache();
-void accessL1(int, uint8_t *, int);
+void accessL1(uint32_t, uint8_t *, uint32_t);
 
-typedef struct CacheLine {
+typedef struct CacheL1 {
     uint8_t Valid;
     uint8_t Dirty;
     uint32_t Tag;
-} CacheLine;
+    uint8_t Data[L1_SIZE];
+} CacheL1;
 
-typedef struct Cache {
-    int init;
-    CacheLine line[256];
-} Cache;
+/**************** Interfaces ***********************************/
+void read(uint32_t, uint8_t *);
+void write(uint32_t, uint8_t *);
 
-/**************** Interfaces **********************************/
-void read(int, uint8_t *);
-
-void write(int, uint8_t *);
-
-#endif // __L1CACHE_H__
+#endif // __L1_CACHE_H__
