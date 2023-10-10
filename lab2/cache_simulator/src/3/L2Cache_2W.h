@@ -28,14 +28,14 @@ typedef struct CacheL2 {
     uint8_t Dirty;
     uint32_t Tag;
     uint32_t Time;
-    uint8_t Data[L2_SIZE];
+    uint8_t Data[BLOCK_SIZE];
 } CacheL2;
 
 typedef struct CacheL1 {
     uint8_t Valid;
     uint8_t Dirty;
     uint32_t Tag;
-    uint8_t Data[L1_SIZE];
+    uint8_t Data[BLOCK_SIZE];
 } CacheL1;
 
 /**************** Interfaces ***********************************/

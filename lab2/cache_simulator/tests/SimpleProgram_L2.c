@@ -1,7 +1,6 @@
 #include "../src/2/L2Cache.h"
 
 int main() {
-
     // set seed for random number generator
     srand(0);
 
