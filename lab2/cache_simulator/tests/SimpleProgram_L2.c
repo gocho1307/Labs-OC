@@ -6,7 +6,7 @@ int main() {
     uint32_t value1, value2, clock;
 
     resetTime();
-    initCache();
+    initCaches();
     value1 = -1;
     value2 = 0;
 
