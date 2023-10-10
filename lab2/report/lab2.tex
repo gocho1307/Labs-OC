@@ -84,14 +84,14 @@
      After writing, we reset this parameter to 0 to prevent inadvertent duplicate writes. Conversely, we set it to 1 when a write operation has just been performed on 
      the record.
 
+    \subsection{Constants and Cache struct}
+    We introduced two new constants, namely \texttt{L1\_N\_LINES} and \texttt{L2\_N\_LINES}, which hold the respective number of lines for each cache. Additionally,
+     within the \texttt{Cache} structure, we incorporated an array to facilitate the storage of cache data.
+
+
     \section{Directly-Mapped L1 Cache}\label{L1_cache}
 
-    In this task, we develop a memory hierarchy with an L1 direct mapped cache with multiple lines with the parameters provided in the constant file.
-    
-    We started by changing the L1Cache header, adding an additional constant (L1\_N\_LINES) that calculates the number of lines available in this cache.
-     We also added an array to the struct of the CacheL1 that will save all the data that is written onto it.
-
-    In the code file, we start by creating an array for the memory data, and our L1Cache. After that, the initCache function
+    We start by creating an array for the memory data, and our L1Cache. After that, the initCache function
      will set all the valid, dirty and tag bits, and data to 0. When acessing the L1Cache, the adress is splitted into tag, index, and offset.
      Using the obtained index, The acessL1 function will then verify the value of the valid bit and compare the obtained tag with the tag 
      in the cache array. If the valid bit is set to 1 (there is data in the location we want to acess) and the tags are the same, the function 
