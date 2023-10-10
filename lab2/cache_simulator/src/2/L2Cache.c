@@ -1,19 +1,19 @@
 #include "L2Cache.h"
 
-unsigned char L1Cache[L1_SIZE];
+uint8_t L1Cache[L1_SIZE];
 Cache L1_Cache;
-unsigned char L2Cache[L2_SIZE];
+uint8_t L2Cache[L2_SIZE];
 Cache L2_Cache;
-unsigned char DRAM[DRAM_SIZE];
-unsigned int time;
+uint8_t DRAM[DRAM_SIZE];
+uint32_t time;
 
 /**************** Time Manipulation ***************************/
 void resetTime() { time = 0; }
 
-unsigned int getTime() { return time; }
+uint32_t getTime() { return time; }
 
 /**************** RAM memory (byte addressable) ***************/
-void accessDRAM(int address, unsigned char *data, int mode) {
+void accessDRAM(int address, uint8_t *data, int mode) {
     if (address >= DRAM_SIZE - WORD_SIZE + 1) {
         exit(-1);
     }
@@ -51,12 +51,12 @@ void initCache() {
 }
 
 /**************** L1 Cache ************************************/
-void accessL1(int address, unsigned char *data, int mode) {
-    unsigned int Offset = address & 0x03F;
-    unsigned int Index = (address >> 6) & 0x0FF;
-    unsigned int Tag = address >> 14;
+void accessL1(int address, uint8_t *data, int mode) {
+    uint32_t Offset = address & 0x03F;
+    uint32_t Index = (address >> 6) & 0x0FF;
+    uint32_t Tag = address >> 14;
 
-    unsigned char TempBlock[BLOCK_SIZE];
+    uint8_t TempBlock[BLOCK_SIZE];
 
     CacheLine *Line = &(L1_Cache.line[Index]);
 
@@ -88,13 +88,13 @@ void accessL1(int address, unsigned char *data, int mode) {
 }
 
 /**************** L2 Cache ************************************/
-void accessL2(int address, unsigned char *data, int mode) {
-    unsigned int Offset = address & 0x03F;
-    unsigned int Index = (address >> 6) & 0x01FF;
-    unsigned int Tag = address >> 15;
+void accessL2(int address, uint8_t *data, int mode) {
+    uint32_t Offset = address & 0x03F;
+    uint32_t Index = (address >> 6) & 0x01FF;
+    uint32_t Tag = address >> 15;
 
-    unsigned int MemAddress = address - Offset;
-    unsigned char TempBlock[BLOCK_SIZE];
+    uint32_t MemAddress = address - Offset;
+    uint8_t TempBlock[BLOCK_SIZE];
 
     CacheLine *Line = &(L2_Cache.line[Index]);
 
@@ -126,10 +126,6 @@ void accessL2(int address, unsigned char *data, int mode) {
 }
 
 /**************** Interfaces **********************************/
-void read(int address, unsigned char *data) {
-    accessL1(address, data, MODE_READ);
-}
+void read(int address, uint8_t *data) { accessL1(address, data, MODE_READ); }
 
-void write(int address, unsigned char *data) {
-    accessL1(address, data, MODE_WRITE);
-}
+void write(int address, uint8_t *data) { accessL1(address, data, MODE_WRITE); }

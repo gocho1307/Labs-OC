@@ -140,3 +140,5 @@ dmypy.json
 *.run.xml
 *.synctex.gz
 *.xdv
+
+test.txt

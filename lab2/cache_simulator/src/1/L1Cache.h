@@ -1,7 +1,9 @@
 #ifndef __L1CACHE_H__
 #define __L1CACHE_H__
 
-#include "../Cache.h"
+#include "Cache.h"
+#include <math.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,19 +11,19 @@
 /**************** Time Manipulation ***************************/
 void resetTime();
 
-unsigned int getTime();
+uint32_t getTime();
 
 /**************** RAM memory (byte addressable) ***************/
-void accessDRAM(int, unsigned char *, int);
+void accessDRAM(int, uint8_t *, int);
 
 /**************** Cache ***************************************/
 void initCache();
-void accessL1(int, unsigned char *, int);
+void accessL1(int, uint8_t *, int);
 
 typedef struct CacheLine {
-    unsigned char Valid;
-    unsigned char Dirty;
-    unsigned int Tag;
+    uint8_t Valid;
+    uint8_t Dirty;
+    uint32_t Tag;
 } CacheLine;
 
 typedef struct Cache {
@@ -30,8 +32,8 @@ typedef struct Cache {
 } Cache;
 
 /**************** Interfaces **********************************/
-void read(int, unsigned char *);
+void read(int, uint8_t *);
 
-void write(int, unsigned char *);
+void write(int, uint8_t *);
 
 #endif // __L1CACHE_H__

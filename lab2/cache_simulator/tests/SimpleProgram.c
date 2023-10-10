@@ -1,14 +1,15 @@
-#include "../src/3/L2Cache_two_way.h"
+#include "../src/3/L2Cache_2W.h"
 
 int main() {
+
     // set seed for random number generator
     srand(0);
 
     int clock1, value;
 
-    for (int n = 1; n <= DRAM_SIZE; n *= 2) {
+    for (int n = 1; n <= DRAM_SIZE / 4; n *= WORD_SIZE) {
         resetTime();
-        initCache();
+        initCaches();
 
         printf("\nNumber of words: %d\n", (n - 1) / WORD_SIZE + 1);
 
@@ -29,7 +30,7 @@ int main() {
 
     // Do random accesses to the cache
     for (int i = 0; i < 100; i++) {
-        int address = rand() % DRAM_SIZE;
+        int address = rand() % (DRAM_SIZE / 4);
         address = address - address % WORD_SIZE;
         int mode = rand() % 2;
         if (mode == MODE_READ) {

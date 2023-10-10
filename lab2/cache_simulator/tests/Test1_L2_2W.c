@@ -1,4 +1,4 @@
-#include "../src/3/L2Cache_two_way.h"
+#include "../src/3/L2Cache_2W.h"
 #include <stdint.h>
 
 int main() {
@@ -11,7 +11,7 @@ int main() {
     }
 
     resetTime();
-    initCache();
+    initCaches();
 
     for (int i = 1; i < 29; i++) {
         write(i, (uint8_t *)&TestData[i]);
