@@ -82,22 +82,10 @@ void accessL2(uint32_t address, uint8_t *data, uint32_t mode) {
         L2[index].Valid = 1;
         L2[index].Dirty = 0;
         L2[index].Tag = tag;
-        L2[index].Time = time;
 
         if (mode == MODE_READ) {
             memcpy(data, &(L2[index].Data), BLOCK_SIZE);
             time += L2_READ_TIME;
-        }
-
-        if (mode == MODE_READ) {
-            memcpy(data, &(L2[index].Data), BLOCK_SIZE);
-            time += L1_READ_TIME;
-            L2[index].Time = time;
-        } else if (mode == MODE_WRITE) {
-            memcpy(&(L2[index].Data), data, BLOCK_SIZE);
-            time += L1_WRITE_TIME;
-            L2[index].Dirty = 1;
-            L2[index].Time = time;
         }
     }
 }

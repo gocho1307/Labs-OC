@@ -1,5 +1,5 @@
-#ifndef __L1_CACHE_H__
-#define __L1_CACHE_H__
+#ifndef __L1CACHE_H__
+#define __L1CACHE_H__
 
 #include "Cache.h"
 #include <stdint.h>
@@ -31,4 +31,4 @@ typedef struct CacheL1 {
 void read(uint32_t, uint8_t *);
 void write(uint32_t, uint8_t *);
 
-#endif // __L1_CACHE_H__
+#endif // __L1CACHE_H__
