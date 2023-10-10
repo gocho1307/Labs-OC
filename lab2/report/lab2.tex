@@ -91,16 +91,14 @@
 
     \section{Directly-Mapped L1 Cache}\label{L1_cache}
 
-    We start by creating an array for the memory data, and our L1Cache. After that, the initCache function
-     will set all the valid, dirty and tag bits, and data to 0. When acessing the L1Cache, the adress is splitted into tag, index, and offset.
-     Using the obtained index, The acessL1 function will then verify the value of the valid bit and compare the obtained tag with the tag 
-     in the cache array. If the valid bit is set to 1 (there is data in the location we want to acess) and the tags are the same, the function 
-     will either read the data from the cache or write the data in the cache, setting the Dirty bit to 1. 
+    We start by initializing the cache and the RAM in the \texttt{init\_cache} function. This entails setting all parameters to 0.
 
-    If the valid bit is set to 0 (there is no data written) or the tags are not the same, the function will verify the
-     value of the dirty bit. If the dirty bit is set to 1, the cache data is saved into memory. Finally, the function will , again,
-     read the data from the cache or write the data onto the cache, updating the dirty bit to either 0 or 1 (respectively), the tag to the given one
-     and setting the valid bit to 1.
+    In the \texttt{accessL1} function, we extract the tag, index and offset bits as described in \textbf{Address Decomposition}. Then we determine if the cache access is a hit. This involves checking
+    its validity (whether the valid parameter is set to 1, indicating data exists in the desired location) and comparing tags. If it is indeed a hit, we check what mode it is on (read or write). Then 
+     we proceed accordingly, marking the cache entry as dirty if the mode is to write (please refer for 1.2 for more information).
+
+    If the tags do not match or the line is still invalid, we are dealing with a miss. In that case, we check whether the entry is marked as dirty. If so, we write bock it to the RAM. Then we retrive data  
+    data from RAM and store it in the L1 cache, and proceed with either a read or write operation based on the mode. Again, if it is a write operation, we signal the entry as dirty. Lastly, we mark the cache entry as valid.
 
     \section{Directly-Mapped L2 Cache}
 
