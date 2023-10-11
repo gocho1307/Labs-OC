@@ -1,0 +1,8 @@
+Write; Address 4; Value 4; Time 111
+Write; Address 16; Value 16; Time 112
+Write; Address 64; Value 64; Time 223
+Write; Address 256; Value 256; Time 334
+Read; Address 256; Value 256; Time 336
+Read; Address 64; Value 64; Time 337
+Read; Address 16; Value 2; Time 338
+Read; Address 4; Value 4; Time 339

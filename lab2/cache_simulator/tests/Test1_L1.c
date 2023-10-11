@@ -1,4 +1,4 @@
-#include "../src/3/L2Cache_2W.h"
+#include "../src/1/L1Cache.h"
 #include <stdint.h>
 
 int main() {
@@ -6,7 +6,7 @@ int main() {
     uint32_t val;
 
     resetTime();
-    initCaches();
+    initCache();
 
     /* Loads a block and then causes a miss */
     /* After that it reads from the original block again */
@@ -14,18 +14,10 @@ int main() {
     printf("Time: %d\n", clock);
 
     read(1, (uint8_t *)&val);
-
-    clock = getTime();
-    printf("Time: %d\n", clock);
-
     val = 17;
     write(1, (uint8_t *)&val);
-
-    clock = getTime();
-    printf("Time: %d\n", clock);
-
     val = 0;
-    read(32768, (uint8_t *)&val);
+    read(49152, (uint8_t *)&val);
 
     clock = getTime();
     printf("Time: %d\n", clock);

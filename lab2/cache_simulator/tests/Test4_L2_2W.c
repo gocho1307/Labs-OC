@@ -8,17 +8,16 @@ int main() {
     resetTime();
     initCaches();
 
-    //chech if write/read adress match
-    for (int i = 4; i < 257; i = i*4) {
+    // Check if write/read adress match
+    for (int i = 4; i < 257; i = i * 4) {
         write(i, (unsigned char *)(&i));
         clock = getTime();
         printf("Write; Address %d; Value %d; Time %d\n", i, i, clock);
     }
 
-    // writes again to see if it's going to update
-    int i = 2;                       
-    write(16,(unsigned char *)(&i));    
-
+    // Writes again to see if it's going to update
+    int i = 2;
+    write(16, (unsigned char *)(&i));
 
     for (int i = 256; i > 1; i = i / 4) {
         read(i, (unsigned char *)(&value));
