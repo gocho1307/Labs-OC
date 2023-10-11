@@ -95,9 +95,8 @@
     Regarding the \texttt{accessL1} function, minimal alterations were made, primarily involving rerouting it to access the L2 Cache rather than directly
     interfacing with the DRAM in the event of a cache miss.
 
-    Since it wasn't specified in the statement, we opted for an inclusive L2 Cache for the inclusion policy, meaning that the blocks of the L1 Cache are all present
-    in the L2 Cache. We saw this as the easiest way to implement the caches, since it could be done easily by using the access functions (\texttt{accessL2} and
-    \texttt{accessDRAM}).
+    Since it wasn't specified in the statement, we opted for a non-inclusive non-exclusive (NINE) L2 Cache for the inclusion policy.
+    We saw this as the easiest way to implement the caches, because there would be no need to check for back invalidation.
 
     The implementation of the L2 Cache was a relatively straightforward process. We essentially duplicated the \texttt{accessL1} function, named it \texttt{accessL2} and,
     instead of re-routing to the L2 Cache, we directed it to the DRAM.
