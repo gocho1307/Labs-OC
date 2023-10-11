@@ -81,7 +81,6 @@ void accessL2(uint32_t address, uint8_t *data, uint32_t mode) {
         L2[index][i].Tag = tag;
     }
 
-    L2[index][i].Time = time;
     if (mode == MODE_READ) {
         memcpy(data, &(L2[index][i].Data), BLOCK_SIZE);
         time += L2_READ_TIME;
@@ -90,6 +89,7 @@ void accessL2(uint32_t address, uint8_t *data, uint32_t mode) {
         time += L2_WRITE_TIME;
         L2[index][i].Dirty = 1;
     }
+    L2[index][i].Time = time;
 }
 
 void accessL1(uint32_t address, uint8_t *data, uint32_t mode) {
