@@ -20,8 +20,8 @@
 \pagestyle{fancy}
 \pagenumbering{arabic}
 \fancyhf{}
-\rhead{Group \textbf{43}}
 \lhead{Report OC Lab 2 2023/2024 LEIC-A}
+\rhead{Group \textbf{43}}
 \cfoot{Gonçalo Bárias (103124), Miguel Costa (103969) e Raquel Braunschweig (102624)}
 \rfoot{\thepage}
 
@@ -49,8 +49,8 @@
 
     As for the \textit{offset}, we use the remainder operation with the block size to obtain the \textit{offset} bits.
 
-    \subsection{Write-back Policy} \label{WBP}
-    To implement the write-back policy, we utilize the \texttt{Dirty} flag:
+    \subsection{Write-back Technique} \label{WBT}
+    To implement the write-back technique, we utilize the \texttt{Dirty} flag (example for \texttt{L1 Cache}, but similar logic for the rest):
 
     \begin{verbatim}
         if (L1[index].Dirty) {
@@ -63,7 +63,7 @@
     When a write operation occurs, the \texttt{Dirty} flag gets set to 1, indicating that it has been modified.
     When a \texttt{Dirty} cache line is evicted from the cache (due to cache replacement or other reasons),
     the data is then written into the next level in the memory hierarchy (DRAM or L2 Cache, depending on the function and exercise).
-    Finally, we reset the \texttt{Dirty} flag to 0 and a new block is obtained from that same memory level, essentially swapping blocks with that level.
+    Finally, we reset the \texttt{Dirty} flag to 0 and, if possible, a new block is obtained from that same memory level, essentially swapping blocks with that level.
 
     \subsection{Constants and Cache struct}
     We introduced two new constants, \texttt{L1\_N\_LINES} and \texttt{L2\_N\_LINES}, which hold the respective number of lines for each cache.
@@ -79,7 +79,7 @@
     cache access is a miss. This involves checking the line's validity (whether the \texttt{Valid} flag is set to 0, indicating that valid data doesn't exist in the line)
     and comparing tags (if they differ, we have a miss).
 
-    If it is indeed a miss, it checks wether the entry is marked as dirty. If so, it follows the write-back technique mentioned in \hyperref[WBP]{section 1.2}, in
+    If it is indeed a miss, it checks whether the entry is marked as dirty. If so, it follows the write-back technique mentioned in \hyperref[WBT]{section 1.2}, in
     this case writing back to the DRAM. After that, it makes sure the line's \texttt{Valid} flag is set to 1, resets the \texttt{Dirty} flag, as previously mentioned, and saves
     the tag in the line.
 
@@ -90,13 +90,13 @@
     In accordance with the provided instructions, we opted to repurpose the cache outlined in \hyperref[S2]{section 2} to serve as our L1 Cache in the memory hierarchy.
 
     In order to simplify the initialization process for both of the caches, we included both of them into the \texttt{initCaches}
-    function. Subsequently, for the setup of the L2 Cache, we followed the same protocol as outlined for the L1 Cache, detailed in \hyperref[S2]{section 2}.
+    function.
 
     Regarding the \texttt{accessL1} function, minimal alterations were made, primarily involving rerouting it to access the L2 Cache rather than directly
-    interfacing with the DRAM in the event of a cache miss or a dirty block.
+    interfacing with the DRAM in the event of a cache miss.
 
-    Since it wasn't specified in the statement, we opted for a inclusive L1 Cache for the inclusion policy, meaning that the blocks of the L2 Cache are all present
-    in the L1 Cache. We saw this as the easiest way to implement the caches, since it could be done easily by using the access functions (\texttt{accessL2} and
+    Since it wasn't specified in the statement, we opted for an inclusive L2 Cache for the inclusion policy, meaning that the blocks of the L1 Cache are all present
+    in the L2 Cache. We saw this as the easiest way to implement the caches, since it could be done easily by using the access functions (\texttt{accessL2} and
     \texttt{accessDRAM}).
 
     The implementation of the L2 Cache was a relatively straightforward process. We essentially duplicated the \texttt{accessL1} function, named it \texttt{accessL2} and,
@@ -107,11 +107,11 @@
     The key difference between this implementation and the one in \hyperref[S3]{section 3} is the 2-Way associativity.
 
     The \texttt{initCaches} function now initializes all of the flags for each line within each cache set. The only other big change was in the \texttt{accessL2} function,
-    that now employs code for the 2-Way set-associative approach, meaning we have to take into account the associativity when calculating the index (now has one less bit)
-    and tag.  The function now has to iterate all of the lines within the indexed set and test the \texttt{Valid} and tag for each one. If none of the lines are free
+    that now employs code for the 2-Way set-associative approach, meaning we have to take into account the associativity when calculating the tag and index (now has one less bit).
+    The function now has to iterate all of the lines within the indexed set and test the \texttt{Valid} flag and tag for each one. If none of the lines are free
     (valid and have a tag that matches), then we have a miss.
 
-    We have a LRU (least recently used) policy for replacing lines within the set, and so we save the \texttt{Time} on every operation. Therefore, when a miss occurs,
-    the program obtains the line with the lowest time (least recently used) and then follows the same protocol as before for getting a new block from the DRAM.
-    The write-back technique is also the same \hyperref[WBP]{as before}.
+    We have a LRU (least recently used) policy for replacing lines within the set, and so we save, for every line, the \texttt{Time} parameter on every operation.
+    Therefore, when a miss occurs, the program obtains the line with the lowest \texttt{Time} (least recently used) and then follows the same protocol as before for getting a new
+    block from the DRAM. The write-back technique is also the \hyperref[WBT]{same as before}.
 \end{document}
