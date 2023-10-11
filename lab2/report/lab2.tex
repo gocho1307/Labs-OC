@@ -15,15 +15,17 @@
     filecolor=magenta,
     urlcolor=blue,
     citecolor=blue,
-    pdftitle={Relatório OC Laboratório 2 2023/2024},
+    pdftitle={Group 43 - Report OC Lab 2 2023/2024 LEIC-A},
     pdfpagemode=FullScreen,
 }
 
 \pagestyle{fancy}
+\pagenumbering{arabic}
 \fancyhf{}
-\rhead{Grupo \textbf{43}}
-\lhead{Relatório OC Laboratório 2 2023/2024 LEIC-A}
+\rhead{Group \textbf{43}}
+\lhead{Report OC Lab 2 2023/2024 LEIC-A}
 \cfoot{Gonçalo Bárias (103124), Miguel Costa (103969) e Raquel Braunschweig (102624)}
+\rfoot{\thepage}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -52,9 +54,9 @@
 \begin{document}
 
     \section{General Code Context}
-    
-    \subsection{Address Decomposition}
-    To compute the address decomposition in every file we used the following code:
+
+    \subsection{Address Decomposition} \label{AD}
+    To compute the address decomposition we used the following code (example for \texttt{L1 Cache}, but similar logic for the rest):
 
     \begin{verbatim}
         tag = address / (L1_N_LINES * BLOCK_SIZE);
@@ -62,58 +64,62 @@
         offset = address % BLOCK_SIZE;
     \end{verbatim}
 
-    The division operation acts as a left shift, removiong lower bits from the address. The remainder operation helps us 
-     isolate the lower-order bits.
+    \vskip -0.3cm
+    The division operation acts as a shift left because we are dealing with powers of 2, removing the least significant bits from the address.
+    The multiplication operation, which acts as a shift right, can be used to undo the previous operation. The remainder operation helps
+    us isolate the least significant bits.
 
-    So, to find the \textit{tag}, we first need to remove the lower bits related to the \textit{index} and \textit{offset}. 
-    
-    For the \textit{index}, we start by subtracting the \textit{offset} bits. Then, we apply the remainder operation using the number of lines, 
-     which gives us the \textit{index} bits.
-     
+    So, to find the \textit{tag}, we first need to remove the lower bits related to the \textit{index} (\texttt{L1\_N\_LINES}) and \textit{offset} (\texttt{BLOCK\_SIZE}).
+
+    For the \textit{index}, we start by shifting out the \textit{offset} bits. Then, we apply the remainder operation using the number of lines,
+    which gives us the \textit{index} bits.
+
     As for the \textit{offset}, we use the remainder operation with the block size to obtain the \textit{offset} bits.
 
     \subsection{Write-back Policy}
-    To implement the write-back policy, we utilize a the following parameter:
+    To implement the write-back policy, we utilize the \texttt{Dirty} flag:
 
     \begin{verbatim}
-        L1[index].Dirty = 0;
-        L1[index].Dirty = 1;
+        if (L1[index].Dirty) {
+            accessDRAM(L1[index].Tag * L1_SIZE + index * BLOCK_SIZE,
+                       L1[index].Data, MODE_WRITE);
+        }
     \end{verbatim}
 
-    When the \texttt{Dirty} parameter is set to 1, it indicates that the information must be written to either the RAM or the L2 cache (depending on the function and exercise).
-     After writing, we reset this parameter to 0 to prevent inadvertent duplicate writes. Conversely, we set it to 1 when a write operation has just been performed on 
-     the record.
+    \vskip -0.3cm
+    When a write operation occurs, the \texttt{Dirty} flag gets set to 1, indicating that it has been modified.
+    When a \texttt{Dirty} cache line is evicted from the cache (due to cache replacement or other reasons),
+    the data is then written into the next level in the memory hierarchy (DRAM or L2 Cache, depending on the function and exercise).
+    Finally, we reset the \texttt{Dirty} flag to 0 and a new block is obtained from that same memory level, essentially swapping blocks with that level.
 
     \subsection{Constants and Cache struct}
-    We introduced two new constants, namely \texttt{L1\_N\_LINES} and \texttt{L2\_N\_LINES}, which hold the respective number of lines for each cache. Additionally,
-     within the \texttt{Cache} structure, we incorporated an array to facilitate the storage of cache data.
+    We introduced two new constants, \texttt{L1\_N\_LINES} and \texttt{L2\_N\_LINES}, which hold the respective number of lines for each cache.
+    Additionally, within the \texttt{CacheLine} struct, we incorporated an array (\texttt{Data}) to facilitate the storage of cache data per line.
+    The \texttt{CacheLineL2} struct for the 2-Way L2 Cache also includes a \texttt{Time} parameter, which is used for the LRU algorithm.
 
+    \section{Directly-Mapped L1 Cache} \label{S2}
 
-    \section{Directly-Mapped L1 Cache}\label{L1_cache}
+    We start by initializing the cache parameters in the \texttt{initCache} function.
 
-    We start by initializing the cache and the RAM in the \texttt{init\_cache} function. This entails setting all parameters to 0.
+    In the \texttt{accessL1} function, we extract the tag, index and offset bits as described in \hyperref[AD]{Address Decomposition}. Then we determine if the cache access is a hit. This involves checking
+    its validity (whether the valid parameter is set to 1, indicating data exists in the desired location) and comparing tags. If it is indeed a hit, we check what mode it is on (read or write). Then
+    we proceed accordingly, marking the cache entry as dirty if the mode is to write (please refer for 1.2 for more information).
 
-    In the \texttt{accessL1} function, we extract the tag, index and offset bits as described in \textbf{Address Decomposition}. Then we determine if the cache access is a hit. This involves checking
-    its validity (whether the valid parameter is set to 1, indicating data exists in the desired location) and comparing tags. If it is indeed a hit, we check what mode it is on (read or write). Then 
-     we proceed accordingly, marking the cache entry as dirty if the mode is to write (please refer for 1.2 for more information).
-
-    If the tags do not match or the line is still invalid, we are dealing with a miss. In that case, we check whether the entry is marked as dirty. If so, we write bock it to the RAM. Then we retrive data  
-    data from RAM and store it in the L1 cache, and proceed with either a read or write operation based on the mode. Again, if it is a write operation, we signal the entry as dirty. Lastly, we mark the cache entry as valid.
+    If the tags do not match or the line is still invalid, we are dealing with a miss. In that case, we check whether the entry is marked as dirty. If so, we write it back to the DRAM. Then we retrive
+    data from the DRAM and store it in the L1 cache, and proceed with either a read or write operation based on the mode. Again, if it is a write operation, we signal the entry as dirty. Lastly, we mark the cache entry as valid.
 
     \section{Directly-Mapped L2 Cache}
 
-    In accordance with the provided instructions, we opted to repurpose the cache outlined in section 1 to serve as our L1 cache.
+    In accordance with the provided instructions, we opted to repurpose the cache outlined in \hyperref[S2]{section 2} to serve as our L1 cache.
 
-    In order to simplify the initialization process for both the caches and the RAM, we consolidated these tasks into the \texttt{init\_caches} 
-     function. Subsequently, for the setup of the L2 cache, we followed the same protocol as outlined for the L1 cache, detailed in section 1.
+    In order to simplify the initialization process for both the caches and the DRAM, we consolidated these tasks into the \texttt{initCaches}
+    function. Subsequently, for the setup of the L2 cache, we followed the same protocol as outlined for the L1 cache, detailed in section 2.
 
     Regarding the \texttt{accessL1} function, minimal alterations were made, primarily involving rerouting it to access the L2 cache rather than directly
-     interfacing with the RAM in the event of a cache miss or a dirty block.
+    interfacing with the DRAM in the event of a cache miss or a dirty block.
 
     The implementation of the L2 cache was a relatively straightforward process. We essentially duplicated the \texttt{accessL1} function, named it \texttt{accessL2} and,
-     instead of re-routing to the L2 cache, we directed it to interact with the RAM. If additional clarity on the \texttt{accessL1} function is needed, the section above 
-     details how this funcion works.
-
+    instead of re-routing to the L2 cache, we directed it to the DRAM.
 
     \section{2-Way L2 Cache}
 

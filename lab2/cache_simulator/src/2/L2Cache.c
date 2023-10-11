@@ -2,8 +2,8 @@
 
 uint32_t time;
 uint8_t DRAM[DRAM_SIZE];
-Cache L2[L2_N_LINES];
-Cache L1[L1_N_LINES];
+CacheLine L2[L2_N_LINES];
+CacheLine L1[L1_N_LINES];
 
 /**************** Time Manipulation ****************************/
 void resetTime() { time = 0; }
@@ -12,8 +12,9 @@ uint32_t getTime() { return time; }
 
 /**************** RAM Memory (byte addressable) ****************/
 void accessDRAM(uint32_t address, uint8_t *data, uint32_t mode) {
-    if (address >= DRAM_SIZE - WORD_SIZE + 1)
+    if (address >= DRAM_SIZE - WORD_SIZE + 1) {
         exit(-1);
+    }
 
     if (mode == MODE_READ) {
         memcpy(data, &(DRAM[address]), BLOCK_SIZE);
@@ -26,9 +27,6 @@ void accessDRAM(uint32_t address, uint8_t *data, uint32_t mode) {
 
 /**************** Caches ***************************************/
 void initCaches() {
-    L1[0].Data[0] = 0;
-    L2[0].Data[0] = 1;
-    printf("%d %d\n", L1[0].Data[0], L2[0].Data[0]);
     /* initL2 */
     for (int i = 0; i < L2_N_LINES; i++) {
         L2[i].Valid = 0;

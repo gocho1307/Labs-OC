@@ -20,12 +20,12 @@ void accessDRAM(uint32_t, uint8_t *, uint32_t);
 void initCache();
 void accessL1(uint32_t, uint8_t *, uint32_t);
 
-typedef struct CacheL1 {
+typedef struct CacheLine {
     uint8_t Valid;
     uint8_t Dirty;
     uint32_t Tag;
     uint8_t Data[BLOCK_SIZE];
-} CacheL1;
+} CacheLine;
 
 /**************** Interfaces ***********************************/
 void read(uint32_t, uint8_t *);

@@ -22,12 +22,12 @@ void initCaches();
 void accessL2(uint32_t, uint8_t *, uint32_t);
 void accessL1(uint32_t, uint8_t *, uint32_t);
 
-typedef struct Cache {
+typedef struct CacheLine {
     uint8_t Valid;
     uint8_t Dirty;
     uint32_t Tag;
     uint8_t Data[BLOCK_SIZE];
-} Cache;
+} CacheLine;
 
 /**************** Interfaces ***********************************/
 void read(uint32_t, uint8_t *);

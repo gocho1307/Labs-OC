@@ -2,8 +2,8 @@
 
 uint32_t time;
 uint8_t DRAM[DRAM_SIZE];
-CacheL2 L2[L2_N_LINES][ASSOC_L2];
-CacheL1 L1[L1_N_LINES];
+CacheLineL2 L2[L2_N_LINES][ASSOC_L2];
+CacheLineL1 L1[L1_N_LINES];
 
 /**************** Time Manipulation ****************************/
 void resetTime() { time = 0; }
@@ -12,8 +12,9 @@ uint32_t getTime() { return time; }
 
 /**************** RAM Memory (byte addressable) ****************/
 void accessDRAM(uint32_t address, uint8_t *data, uint32_t mode) {
-    if (address >= DRAM_SIZE - WORD_SIZE + 1)
+    if (address >= DRAM_SIZE - WORD_SIZE + 1) {
         exit(-1);
+    }
 
     if (mode == MODE_READ) {
         memcpy(data, &(DRAM[address]), BLOCK_SIZE);
