@@ -20,6 +20,8 @@ all:
 	$(CC) $(CFLAGS) tests/SimpleProgram_L2_2W.c src/3/L2Cache_2W.c -o tests/SimpleProgram_L2_2W
 	$(CC) $(CFLAGS) tests/Test0_L2_2W.c src/3/L2Cache_2W.c -o tests/Test0_L2_2W
 	$(CC) $(CFLAGS) tests/Test1_L2_2W.c src/3/L2Cache_2W.c -o tests/Test1_L2_2W
+	$(CC) $(CFLAGS) tests/Test2_L2_2W.c src/3/L2Cache_2W.c -o tests/Test2_L2_2W
+	$(CC) $(CFLAGS) tests/Test3_L2_2W.c src/3/L2Cache_2W.c -o tests/Test3_L2_2W
 
 clean:
 	rm -f $(OBJECTS) $(TARGETS) test.txt

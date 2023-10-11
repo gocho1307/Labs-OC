@@ -1,0 +1,4 @@
+Time: 0
+Time: 228
+Value: 17
+Time: 239
