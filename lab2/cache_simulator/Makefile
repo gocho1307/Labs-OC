@@ -12,7 +12,7 @@ HEADERS := $(shell find . -name "*.h")
 OBJECTS := $(SOURCES:.c=.o)
 TARGETS := $(patsubst %.c,%,$(wildcard tests/*.c))
 
-.PHONY: all clean fmt test
+.PHONY: all clean fmt
 
 all:
 	$(CC) $(CFLAGS) tests/SimpleProgram_L1.c src/1/L1Cache.c -o tests/SimpleProgram_L1
