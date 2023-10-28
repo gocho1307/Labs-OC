@@ -1,3 +1,3 @@
-# Ignore wrong detected perl files
 lab2/report/.latexmkrc linguist-vendored
 lab3/attachments/.latexmkrc linguist-vendored
+lab3/attachments/mips.sty linguist-vendored
